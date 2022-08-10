@@ -1,6 +1,6 @@
 TARGET = philo
 
-SRC = philo.c protection_tools.c
+SRC = philo.c protection_tools.c simulation.c
 
 OBJS = $(SRC:%.c=%.o)
 
