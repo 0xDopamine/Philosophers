@@ -6,7 +6,7 @@
 /*   By: mbaioumy <mbaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/08 23:38:04 by mbaioumy          #+#    #+#             */
-/*   Updated: 2022/08/09 22:44:43 by mbaioumy         ###   ########.fr       */
+/*   Updated: 2022/08/11 06:36:17 by mbaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,27 +14,19 @@
 
 int main(int argc, char **argv)
 {
-	t_philo *philo;
-	t_data	*data;
-	int		i;
-	int		j;
+	t_ph	*ph;
 
-	philo = malloc(sizeof(t_philo));
-	data = malloc(sizeof(t_data));
-	i = 0;
-	j = -1;
+	ph = malloc(sizeof(t_ph));
+	ph->philo = malloc(sizeof(t_philo));
 	if (argc == 5 || argc == 6)
 	{
-		data->argc = argc;
-		philo->ph_data = malloc(sizeof(int) * argc);
-		while (argv[++i])
-		{
-			if (ft_check_argument(argv[i]))
-				philo->ph_data[++j] = ft_atoi(argv[i]);
-			else
-				perror("Arguments should be valid numeric values.");
-		}
-		ft_philosophers(philo);
+		ph->data.total = ft_atoi(argv[1]);
+		ph->data.time_death = ft_atoi(argv[2]);
+		ph->data.time_eat = ft_atoi(argv[3]);
+		ph->data.time_sleep = ft_atoi(argv[4]);
+		if (argc == 6)
+			ph->data.must_eat = ft_atoi(argv[5]);
+		ft_philosophers(ph);
 	}
 	else
 		perror("Only 4 or 5 arguments allowed.");
