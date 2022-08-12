@@ -6,26 +6,11 @@
 /*   By: mbaioumy <mbaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 20:33:52 by mbaioumy          #+#    #+#             */
-/*   Updated: 2022/08/12 09:10:18 by mbaioumy         ###   ########.fr       */
+/*   Updated: 2022/08/12 09:41:32 by mbaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
-
-void	red() 
-{
-	printf("\033[1;31m");
-}
-
-void	yellow()
-{
-	printf("\033[1;33m");
-}
-
-void	reset()
-{
-	printf("\033[0m");
-}
 
 void	*routine(void *arg)
 {
@@ -39,35 +24,49 @@ void	*routine(void *arg)
 	{
 		id = ph->philo->id;
 		id_2 = (id + 1) % ph->data.total;
-		pthread_join(ph->philo[id].ph_id, NULL);
 		if (ph->philo->id % 2 == 0)
 			ft_usleep(ph->data.time_eat / 10);
 		if (pthread_mutex_lock(&ph->philo[id].fork_l) != 0)
 			perror("Failed to lock mutex 1");
 		if (pthread_mutex_lock(ph->philo[id_2].fork_r) != 0)
 			perror("Failed to lock mutex 2");
-		reset();
-		printf("%d has taken a fork..\n", id);
-		yellow();
-		printf("%d is eating..\n", id);
-		reset();
+		print_msg(id, actual_time(), FORK);
+		print_msg(id, actual_time(), EAT);
 		ft_usleep(ph->data.time_eat);
-		// if (actual_time() == ph->data.time_sleep)
-		// {
-			printf("%d is sleeping..\n", id);
-			pthread_mutex_unlock(&ph->philo[id].fork_l);
-			pthread_mutex_unlock(ph->philo[id_2].fork_r);
-		// }
-		red();
-		printf("%d is thinking..\n", id);
-		reset();
+		print_msg(id, actual_time(), SLEEP);
+		pthread_mutex_unlock(&ph->philo[id].fork_l);
+		pthread_mutex_unlock(ph->philo[id_2].fork_r);
+		print_msg(id, actual_time(), THINK);
 	}
 	return (0);
 }
 
-void	ft_philosophers(t_ph *ph)
+void	create_threads(t_ph *ph)
 {
-	ph->philo = malloc(sizeof(t_philo) * ph->data.total);
+	ph->data.index = 0;
+	while (ph->data.index < ph->data.total)
+	{
+		ph->philo[ph->data.index].id = ph->data.index;
+		ph->philo->id = ph->data.index;
+		if (pthread_create(&ph->philo[ph->data.index].ph_id, NULL, routine, ph))
+			perror("Thread creatiog failed.");
+		ph->data.index++;
+	}
+}
+
+void	join_threads(t_ph *ph)
+{
+	ph->data.index = 0;
+	while (ph->data.index < ph->data.total)
+	{
+		if (pthread_join(ph->philo[ph->data.index].ph_id, NULL))
+			perror("Thread detach failed.");
+		ph->data.index++;
+	}
+}
+
+void	init_mutex(t_ph *ph)
+{
 	ph->data.index = 0;
 	while (ph->data.index < ph->data.total)
 	{
@@ -80,20 +79,12 @@ void	ft_philosophers(t_ph *ph)
 			ph->philo[ph->data.index].fork_r = &ph->philo[ph->data.index + 1].fork_l;
 		ph->data.index++;
 	}
-	ph->data.index = 0;
-	while (ph->data.index < ph->data.total)
-	{
-		ph->philo[ph->data.index].id = ph->data.index;
-		ph->philo->id = ph->data.index;
-		if (pthread_create(&ph->philo[ph->data.index].ph_id, NULL, routine, ph))
-			perror("Thread creatiog failed.");
-		ph->data.index++;
-	}
-	ph->data.index = 0;
-	while (ph->data.index < ph->data.total)
-	{
-		if (pthread_join(ph->philo[ph->data.index].ph_id, NULL))
-			perror("Thread detach failed.");
-		ph->data.index++;
-	}
+}
+
+void	ft_philosophers(t_ph *ph)
+{
+	ph->philo = malloc(sizeof(t_philo) * ph->data.total);
+	init_mutex(ph);
+	create_threads(ph);
+	join_threads(ph);
 }

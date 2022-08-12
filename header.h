@@ -6,7 +6,7 @@
 /*   By: mbaioumy <mbaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 19:49:48 by mbaioumy          #+#    #+#             */
-/*   Updated: 2022/08/12 08:07:37 by mbaioumy         ###   ########.fr       */
+/*   Updated: 2022/08/12 09:43:43 by mbaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,13 @@
 #include <sys/time.h>
 #include <stdlib.h>
 
-enum {
-	NUM_PH,
-	T_DIE,
-	T_EAT,
-	T_SLEEP,
-	T_PH_EAT
-} ;
+typedef enum {
+	EAT,
+	SLEEP,
+	THINK,
+	DIE,
+	FORK
+} state;
 
 
 typedef struct s_data {
@@ -61,6 +61,8 @@ void		ft_philosophers(t_ph *ph);
 long int    actual_time(void);
 void		ft_usleep(long int time_ms);
 void		reset();
-void		yellow();
+void		blue();
 void		red();
+void		purple();
+void    	print_msg(int id, long int time, state x);
 #endif
