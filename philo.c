@@ -6,7 +6,7 @@
 /*   By: mbaioumy <mbaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/08 23:38:04 by mbaioumy          #+#    #+#             */
-/*   Updated: 2022/08/12 09:20:47 by mbaioumy         ###   ########.fr       */
+/*   Updated: 2022/08/12 11:53:55 by mbaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ int main(int argc, char **argv)
 		if (argc == 6)
 			ph->data.must_eat = ft_atoi(argv[5]);
 		ft_philosophers(ph);
+		ft_supervisor(ph);
 		// printf("actual time: %ld\n", actual_time());
 	}
 	else

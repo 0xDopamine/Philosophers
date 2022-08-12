@@ -6,7 +6,7 @@
 /*   By: mbaioumy <mbaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 19:49:48 by mbaioumy          #+#    #+#             */
-/*   Updated: 2022/08/12 09:43:43 by mbaioumy         ###   ########.fr       */
+/*   Updated: 2022/08/12 11:58:30 by mbaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,11 @@
 #include <sys/time.h>
 #include <stdlib.h>
 
+enum {
+	DEAD,
+	ALIVE
+} ;
+
 typedef enum {
 	EAT,
 	SLEEP,
@@ -26,7 +31,6 @@ typedef enum {
 	DIE,
 	FORK
 } state;
-
 
 typedef struct s_data {
 	int				argc;
@@ -47,12 +51,14 @@ typedef struct s_philo {
 	pthread_mutex_t	*fork_r;
 	pthread_mutex_t	fork_l;
 	t_data			*data;
+	long int		last_meal;
 } t_philo ;
 
 typedef struct s_ph {
 	t_philo	*philo;
 	t_data	data;
 } t_ph ;
+
 
 int			ft_isdigit(int c);
 int			ft_check_argument(char *arg);
@@ -65,4 +71,5 @@ void		blue();
 void		red();
 void		purple();
 void    	print_msg(int id, long int time, state x);
+
 #endif
