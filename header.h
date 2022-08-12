@@ -6,7 +6,7 @@
 /*   By: mbaioumy <mbaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 19:49:48 by mbaioumy          #+#    #+#             */
-/*   Updated: 2022/08/11 06:56:49 by mbaioumy         ###   ########.fr       */
+/*   Updated: 2022/08/12 08:07:37 by mbaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include <unistd.h>
 #include <pthread.h>
 #include <stdio.h>
-#include <time.h>
+#include <sys/time.h>
 #include <stdlib.h>
 
 enum {
@@ -58,4 +58,9 @@ int			ft_isdigit(int c);
 int			ft_check_argument(char *arg);
 int			ft_atoi(const char *str);
 void		ft_philosophers(t_ph *ph);
+long int    actual_time(void);
+void		ft_usleep(long int time_ms);
+void		reset();
+void		yellow();
+void		red();
 #endif
