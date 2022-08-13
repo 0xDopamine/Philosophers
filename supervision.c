@@ -6,7 +6,7 @@
 /*   By: mbaioumy <mbaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/12 11:53:35 by mbaioumy          #+#    #+#             */
-/*   Updated: 2022/08/13 04:21:19 by mbaioumy         ###   ########.fr       */
+/*   Updated: 2022/08/13 04:32:01 by mbaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,7 @@ int	check_death(long int current_time, t_ph *ph)
 		last_meal = ph->philo[i].last_meal;
 		if (time > ph->data.time_death)
 		{
-            if (pthread_mutex_init(&ph->sup_mutex, NULL) != 0)
-			    perror("Mutex init failed.");
+            pthread_mutex_lock(&ph->sup_mutex);
 			print_msg(ph->philo->id, current_time, DIE);
             pthread_mutex_unlock(&ph->sup_mutex);
 			return (DEAD);

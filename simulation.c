@@ -6,7 +6,7 @@
 /*   By: mbaioumy <mbaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 20:33:52 by mbaioumy          #+#    #+#             */
-/*   Updated: 2022/08/13 04:18:19 by mbaioumy         ###   ########.fr       */
+/*   Updated: 2022/08/13 04:32:22 by mbaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,10 @@ void	init_mutex(t_ph *ph)
 void	ft_philosophers(t_ph *ph)
 {
 	ph->philo = malloc(sizeof(t_philo) * ph->data.total);
+    if (pthread_mutex_init(&ph->sup_mutex, NULL) != 0)
+		perror("Mutex init failed.");
+	if (pthread_create(&ph->sup_id, NULL, ft_supervisor, ph))
+		perror("Supervisor thread failed");
 	init_mutex(ph);
 	create_threads(ph);
 	join_threads(ph);
