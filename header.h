@@ -6,7 +6,7 @@
 /*   By: mbaioumy <mbaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 19:49:48 by mbaioumy          #+#    #+#             */
-/*   Updated: 2022/08/13 04:10:56 by mbaioumy         ###   ########.fr       */
+/*   Updated: 2022/08/13 08:27:54 by mbaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,8 @@ typedef struct s_data {
 typedef struct s_philo {
 	int				id;
 	pthread_t		ph_id;
-	pthread_mutex_t	*fork_r;
-	pthread_mutex_t	fork_l;
+	pthread_mutex_t	fork;
+	pthread_mutex_t	l_meal_mutex;
 	t_data			*data;
 	long int		last_meal;
 } t_philo ;
