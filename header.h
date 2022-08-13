@@ -6,7 +6,7 @@
 /*   By: mbaioumy <mbaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 19:49:48 by mbaioumy          #+#    #+#             */
-/*   Updated: 2022/08/12 11:58:30 by mbaioumy         ###   ########.fr       */
+/*   Updated: 2022/08/13 04:10:56 by mbaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,10 +55,11 @@ typedef struct s_philo {
 } t_philo ;
 
 typedef struct s_ph {
-	t_philo	*philo;
-	t_data	data;
+	pthread_t		sup_id;
+	pthread_mutex_t	sup_mutex;
+	t_philo			*philo;
+	t_data			data;
 } t_ph ;
-
 
 int			ft_isdigit(int c);
 int			ft_check_argument(char *arg);
@@ -71,5 +72,6 @@ void		blue();
 void		red();
 void		purple();
 void    	print_msg(int id, long int time, state x);
-
+void   		*ft_supervisor(void *arg);
+int			check_death(long int current_time, t_ph *ph);
 #endif
