@@ -6,7 +6,7 @@
 /*   By: mbaioumy <mbaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 19:49:48 by mbaioumy          #+#    #+#             */
-/*   Updated: 2022/08/14 05:32:08 by mbaioumy         ###   ########.fr       */
+/*   Updated: 2022/08/14 11:09:45 by mbaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,12 +53,11 @@ typedef struct s_philo {
 	pthread_mutex_t	fork;
 	pthread_mutex_t	l_meal_mutex;
 	t_data			*data;
+	int				meals;
 	long int		last_meal;
 } t_philo ;
 
 typedef struct s_ph {
-	pthread_t		sup_id;
-	pthread_mutex_t	sup_mutex;
 	t_philo			*philo;
 	t_data			data;
 } t_ph ;
@@ -74,12 +73,12 @@ void		blue();
 void		red();
 void		purple();
 void    	print_msg(int id, long int time, state x);
-void   		*ft_supervisor(void *arg);
+void   		*ft_supervisor(t_ph *ph);
 int			check_death(long int current_time, t_ph *ph);
 void		ft_forks(t_ph *ph, int id, int id_2);
 void		ft_eat(t_ph *ph, int id);
 void		ft_sleep(t_ph *ph, int id);
 void		ft_unlock_forks(t_ph *ph, int id, int id_2);
 void		ft_think(t_ph *ph, int id);
-
+void    	ft_exit(t_ph *ph);
 #endif

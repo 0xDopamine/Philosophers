@@ -1,35 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   time_tools.c                                       :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mbaioumy <mbaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/08/12 03:07:50 by mbaioumy          #+#    #+#             */
-/*   Updated: 2022/08/14 10:26:33 by mbaioumy         ###   ########.fr       */
+/*   Created: 2022/08/14 11:06:34 by mbaioumy          #+#    #+#             */
+/*   Updated: 2022/08/14 11:13:05 by mbaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
 
-long int	actual_time(void)
+void    ft_exit(t_ph *ph)
 {
-	long int		time;
-	struct timeval	current_time;
+	int	i;
 
-	time = 0;
-	if (gettimeofday(&current_time, NULL) == -1)
-		perror("Gettimeofday failed");
-	time = (current_time.tv_sec * 1000) + (current_time.tv_usec / 1000);
-	return (time);
-}
-
-void	ft_usleep(long int time_ms)
-{
-	long int	start_time;
-
-	start_time = 0;
-	start_time = actual_time();
-	while ((actual_time() - start_time) < time_ms)
-		usleep(300);
+	i = -1;
+	while (++i < ph->data.total)
+		pthread_detach(ph->philo[i].ph_id);
+	return ;
 }

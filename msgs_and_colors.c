@@ -6,7 +6,7 @@
 /*   By: mbaioumy <mbaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/12 09:23:40 by mbaioumy          #+#    #+#             */
-/*   Updated: 2022/08/12 09:43:37 by mbaioumy         ###   ########.fr       */
+/*   Updated: 2022/08/14 09:34:40 by mbaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ void    purple()
 void    print_msg(int id, long int time, state x)
 {
     reset();
+
     if (x == EAT)
     {
         red();
