@@ -6,7 +6,7 @@
 /*   By: mbaioumy <mbaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 20:33:52 by mbaioumy          #+#    #+#             */
-/*   Updated: 2022/08/13 09:02:37 by mbaioumy         ###   ########.fr       */
+/*   Updated: 2022/08/14 05:44:45 by mbaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,34 +14,35 @@
 
 void	*routine(void *arg)
 {
-	t_ph	*ph;
-	int		id;
-	int		id_2;
+	t_ph		*ph;
+	int			id;
+	int			id_2;
 
 	ph = (t_ph *)arg;
+	id = ph->philo->id;
+	id_2 = (id + 1) % ph->data.total;
+	if (id % 2 == 0)
+		ft_usleep(ph->data.time_eat / 10);
 	while (1)
 	{
-		id = ph->philo->id;
-		id_2 = (id + 1) % ph->data.total;
-		if (id % 2 == 0)
-			ft_usleep(ph->data.time_eat / 10);
-		if (pthread_mutex_lock(&ph->philo[id].fork) != 0)
-			perror("Failed to lock fork 1");
-		print_msg(id, actual_time(), FORK);
-		if (pthread_mutex_lock(&ph->philo[id_2].fork) != 0)
-			perror("Failed to lock fork 2");
-		print_msg(id, actual_time(), FORK);
-		// if (pthread_mutex_lock(&ph->philo[id].l_meal_mutex) != 0)
-		// 	perror("Failed to lock last meal");
+		if (pthread_create(&ph->sup_id, NULL, ft_supervisor, ph) != 0)
+			perror("Supervisor thread creation failed.");
+		pthread_mutex_lock(&ph->sup_mutex);
+		ft_forks(ph, id, id_2);
+		ft_eat(ph, id);
+		if (pthread_mutex_lock(&ph->philo[id].l_meal_mutex) != 0)
+		 	perror("Failed to lock last meal");
 		ph->philo[id].last_meal = actual_time();
-		// pthread_mutex_unlock(&ph->philo[id].l_meal_mutex);
-		print_msg(id, actual_time(), EAT);
-		ft_usleep(ph->data.time_eat);
-		print_msg(id, actual_time(), SLEEP);
-		pthread_mutex_unlock(&ph->philo[id].fork);
-		pthread_mutex_unlock(&ph->philo[id_2].fork);
+		pthread_mutex_unlock(&ph->philo[id].l_meal_mutex);
+		pthread_mutex_lock(&ph->sup_mutex);
+		ft_sleep(ph, id);
+		ft_unlock_forks(ph, id, id_2);
+        pthread_mutex_lock(&ph->data.message);
 		ft_usleep(ph->data.time_sleep);
-		print_msg(id, actual_time(), THINK);
+        pthread_mutex_unlock(&ph->data.message);
+		ft_think(ph, id);
+		pthread_join(ph->sup_id, NULL);
+		pthread_mutex_unlock(&ph->sup_mutex);
 	}
 	return (0);
 }
@@ -72,27 +73,23 @@ void	join_threads(t_ph *ph)
 
 void	init_mutex(t_ph *ph)
 {
-	int	id_2;
-
 	ph->data.index = 0;
 	while (ph->data.index < ph->data.total)
 	{
 		ph->philo[ph->data.index].id = ph->data.index;
-		id_2 = (ph->data.index + 1) % ph->data.total;
 		if (pthread_mutex_init(&ph->philo[ph->data.index].fork, NULL) != 0)
+			perror("Mutex init failed.");
+		if (pthread_mutex_init(&ph->philo[ph->data.index].l_meal_mutex, NULL) != 0)
 			perror("Mutex init failed.");
 		ph->data.index++;
 	}
 }
 
-void	ft_philosophers()
+void	ft_philosophers(t_ph *ph)
 {
-	t_ph	*ph;
-
 	ph->philo = malloc(sizeof(t_philo) * ph->data.total);
+	pthread_mutex_init(&ph->data.message, NULL);
 	init_mutex(ph);
-	create_threads(ph);
-	if (pthread_join(ph->sup_id, NULL))
-		perror("Thread detach failed.");	
+	create_threads(ph);	
 	join_threads(ph);
 }
