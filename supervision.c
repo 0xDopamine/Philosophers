@@ -6,31 +6,33 @@
 /*   By: mbaioumy <mbaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/12 11:53:35 by mbaioumy          #+#    #+#             */
-/*   Updated: 2022/08/14 10:18:02 by mbaioumy         ###   ########.fr       */
+/*   Updated: 2022/08/14 11:48:24 by mbaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
 
-int	check_death(long int current_time, t_ph *ph)
+int	check_death(t_ph *ph)
 {
 	long int	time;
 	int			i;
 
 	i = 0;
-	(void)current_time;
-	while (i < ph->data.total)
+	if (ph->data.stop)
 	{
-		time = actual_time() - ph->philo[i].last_meal;
-		if (time >= (long)(ph->data.time_death))
+		while (i < ph->data.total)
 		{
-            pthread_mutex_lock(&ph->data.message);
-			print_msg(ph->philo->id, (actual_time() - ph->data.start_time), DIE);
-			return (DEAD);
+			time = actual_time() - ph->philo[i].last_meal;
+			if (time >= (long)(ph->data.time_death))
+			{
+				pthread_mutex_lock(&ph->data.message);
+				print_msg(ph->philo->id, (actual_time() - ph->data.start_time), DIE);
+				return (DEAD);
+			}
+			i++;
+			if (i == ph->data.total)
+				i = 0; 	
 		}
-		i++;
-		if (i == ph->data.total)
-			i = 0; 	
 	}
 	return (ALIVE);
 }
@@ -41,7 +43,7 @@ void    *ft_supervisor(t_ph *ph)
 
 	time = actual_time();
 	ph->data.index = 0;
-	if (check_death(time, ph) == DEAD)
+	if (check_death(ph) == DEAD)
 		exit(1);
 	return (0);
 }

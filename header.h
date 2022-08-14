@@ -6,7 +6,7 @@
 /*   By: mbaioumy <mbaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 19:49:48 by mbaioumy          #+#    #+#             */
-/*   Updated: 2022/08/14 11:09:45 by mbaioumy         ###   ########.fr       */
+/*   Updated: 2022/08/14 11:48:16 by mbaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void		red();
 void		purple();
 void    	print_msg(int id, long int time, state x);
 void   		*ft_supervisor(t_ph *ph);
-int			check_death(long int current_time, t_ph *ph);
+int			check_death(t_ph *ph);
 void		ft_forks(t_ph *ph, int id, int id_2);
 void		ft_eat(t_ph *ph, int id);
 void		ft_sleep(t_ph *ph, int id);
