@@ -6,39 +6,16 @@
 /*   By: mbaioumy <mbaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 20:22:25 by mbaioumy          #+#    #+#             */
-/*   Updated: 2022/08/09 20:23:25 by mbaioumy         ###   ########.fr       */
+/*   Updated: 2022/08/15 06:46:08 by mbaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
 
-int	ft_isdigit(int c)
+long	calres_tester(const char *str, int i, int sign)
 {
-	if (c >= 48 && c <= 57)
-		return (1);
-	else
-		return (0);
-}
-
-int	ft_check_argument(char *arg)
-{
-	int	i;
-
-	i = 0;
-	while (arg[i])
-	{
-		if (arg[i] >= 48 && arg[i] <= 57)
-			i++;
-		else
-			return (0);
-	}
-	return (1);
-}
-
-static int	calres(const char *str, int i, int sign)
-{
-	long	temp;
-	long	res;
+	long		temp;
+	long		res;
 
 	temp = 0;
 	res = 0;
@@ -55,7 +32,7 @@ static int	calres(const char *str, int i, int sign)
 	return (res * sign);
 }
 
-int	ft_atoi(const char *str)
+int	ft_atoi_tester(const char *str)
 {
 	int		i;
 	long	res;
@@ -74,5 +51,44 @@ int	ft_atoi(const char *str)
 			sign *= -1;
 		i++;
 	}
-	return (calres(str, i, sign));
+	res = calres_tester(str, i, sign);
+	if (res > 2147483647 || res < -2147483648)
+		return (0);
+	return (1);
+}
+
+int	ft_isdigit(char *str)
+{
+	int	i;
+
+	i = 0;
+	if (str[i] == '0')
+		return (0);
+	while (str[i])
+	{
+		if (str[i] <= '9' && str[i] >= '0')
+			i++;
+		else
+			return (0);
+	}
+	return (1);
+}
+
+int	ft_check_argument(char **arg)
+{
+	int	i;
+
+	i = 1;
+	while (arg[i])
+	{
+		if (ft_isdigit(arg[i]))
+		{
+			if (!ft_atoi_tester(arg[i]))
+				return (0);
+		}
+		else
+			return (0);
+		i++;
+	}
+	return (1);
 }

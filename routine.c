@@ -6,7 +6,7 @@
 /*   By: mbaioumy <mbaioumy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 05:18:56 by mbaioumy          #+#    #+#             */
-/*   Updated: 2022/08/14 12:00:48 by mbaioumy         ###   ########.fr       */
+/*   Updated: 2022/08/16 04:29:34 by mbaioumy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,22 +24,21 @@ void	ft_forks(t_ph *ph, int id, int id_2)
 	pthread_mutex_lock(&ph->data.message);
 	print_msg(id, (actual_time() - ph->data.start_time), FORK);
 	pthread_mutex_unlock(&ph->data.message);
-
 }
 
 void	ft_eat(t_ph *ph, int id)
 {
 	pthread_mutex_lock(&ph->data.message);
 	print_msg(id, (actual_time() - ph->data.start_time), EAT);
-    pthread_mutex_unlock(&ph->data.message);
-    ft_usleep(ph->data.time_eat);
+	pthread_mutex_unlock(&ph->data.message);
+	ft_usleep(ph->data.time_eat);
 }
 
 void	ft_sleep(t_ph *ph, int id)
 {
 	pthread_mutex_lock(&ph->data.message);
 	print_msg(id, (actual_time() - ph->data.start_time), SLEEP);
-    pthread_mutex_unlock(&ph->data.message);
+	pthread_mutex_unlock(&ph->data.message);
 	ft_usleep(ph->data.time_sleep);
 }
 

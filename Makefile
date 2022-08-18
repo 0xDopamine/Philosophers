@@ -14,7 +14,7 @@ all: $(TARGET)
 	cc $(FLAGS) -c $< -o $@
 
 $(TARGET): $(OBJS)
-	cc $(FLAGS) -lpthread $(OBJS) -o $(TARGET)
+	cc $(FLAGS) -lpthread $(OBJS) -o $(TARGET) ; $(DEL) $(OBJS)
 
 re: fclean all
 
